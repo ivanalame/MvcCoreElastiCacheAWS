@@ -7,6 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<RepositoryCoches>();
 builder.Services.AddTransient<ServiceAWSCache>();
+string connectionString = builder.Configuration.GetConnectionString("CacheRedis");
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = connectionString;
+    options.InstanceName = "cache-coches";
+});
 
 var app = builder.Build();
 
